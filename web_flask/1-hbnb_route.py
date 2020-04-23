@@ -12,6 +12,7 @@ def hello_world():
     '''display text'''
     return ("Hello HBNB!")
 
+
 @app.route('/hbnb')
 def HBNB():
     '''deisplay text'''
