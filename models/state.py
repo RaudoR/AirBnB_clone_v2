@@ -1,29 +1,35 @@
 #!/usr/bin/python3
-"""This is the state class"""
+'''
+    Implementation of the State class
+'''
+
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String
-from sqlalchemy.orm import relationship
-import os
+import sqlalchemy
+import models
+from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, backref
+from os import getenv
 
 
 class State(BaseModel, Base):
-    """This is the class for State
-    Attributes:
-        name: input name
-    """
-    __tablename__ = "states"
+    '''
+        Implementation for the State.
+    '''
+    if getenv('HBNB_TYPE_STORAGE') != 'db':
 
-    name = Column(String(128), nullable=False)
-
-    if os.environ.get("HBNB_TYPE_STORAGE") == "db":
-        cities = relationship("City", backref="state", cascade="all, delete")
-
-    else:
         @property
         def cities(self):
-            """ returns a list of associated cities """
+            """Setter Method to list cities"""
             city_list = []
-            for city in models.storage.all(City).items():
-                if self.id == city.state_id:
-                    city_list.append(city)
+            for key, value in models.storage.all().items():
+                try:
+                    if value.state_id == self.id:
+                        city_list.append(value)
+                except BaseException:
+                    pass
             return city_list
+    else:
+        cities = relationship('City', cascade='all, delete', backref='state')
+    __tablename__ = 'states'
+    name = Column(String(128), nullable=False)
