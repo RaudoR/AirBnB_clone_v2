@@ -2,13 +2,13 @@
 <HTML lang="en">
   <HEAD>
     <TITLE>HBNB</TITLE>
-  </HEAD>
+    </HEAD>
   <BODY>
     <H1>States</H1>
     <UL>
-      {% for items in states | sort(attribute='name')%}
-      <LI>{{ items.id}}: <B>{{ items.name }}</B></LI>
+      {% for state in states %}
+      <li>{{ state.id }}: <B>{{ state.name }}</B></li>
       {% endfor %}
-    </UL>
-  </BODY>
-  </HTML>
+      </UL>
+    </BODY>
+</HTML>
